@@ -1,0 +1,55 @@
+id: phase9_review_consistency_audit
+title: Review Phase 9 consistency audit before follow-up validation
+priority: medium
+depends_on:
+  - phase9_dashboard_dogfood_validation
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for a post-Phase-9 consistency audit.
+
+  Do not write implementation code. Define the audit constraints and evidence
+  standards for a follow-up sweep over the landed Phase 9 output.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - docs/phase9/reviews/*.md
+  - docs/phase9/handoffs/*.md
+  - VISION.md
+  - landed Phase 9 dashboard and runtime code
+
+  Your review must constrain:
+  1. how to distinguish isolated follow-up defects from broader contract drift
+  2. what runtime-to-dashboard contracts must be re-checked systematically
+  3. what design-guideline regressions must be re-checked systematically
+  4. what evidence is required before the audit can declare an area clean
+  5. what findings are must-fix before calling Phase 9 truly stable
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/consistency-audit.md
+
+  The artifact must include:
+  - audit scope
+  - evidence expectations
+  - required code/runtime areas to inspect
+  - required tests or validation commands to run
+  - findings format expectations
+  - fail conditions
+  - escalation conditions
+
+  This review is not a new implementation slice. It is a reviewer-authored
+  contract for a broad consistency sweep over already-landed Phase 9 work.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/consistency-audit.md.
+  - Reviewer criteria define a concrete audit over runtime contracts, dashboard rendering, and design-guideline adherence.
+  - Reviewer output makes it hard for the generator to return vague reassurance instead of specific findings.
+  - Reviewer output distinguishes must-fix inconsistencies from acceptable follow-up items.
+escalation_rules:
+  - Escalate if the landed Phase 9 output is too incomplete or contradictory to audit meaningfully.
+  - Escalate if the existing Phase 9 review/handoff artifacts are too weak to anchor a trustworthy follow-up sweep.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

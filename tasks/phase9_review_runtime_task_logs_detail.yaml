@@ -1,0 +1,54 @@
+id: phase9_review_runtime_task_logs_detail
+title: Review Phase 9 shared runtime task logs and detail contract before implementation
+priority: high
+depends_on:
+  - phase9_runtime_output_stream
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the shared runtime task-detail and historical-log
+  contract slice.
+
+  Do not write implementation code. Define the constraints that later UI work
+  must be able to rely on.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - CLAUDE.md
+  - src/runtime.ts
+  - src/server/ipc-types.ts
+  - get-task / get-logs related code and tests
+
+  Your review must cover:
+  1. active-vs-historical output behavior
+  2. task detail fields and run-health fields the UI can safely rely on
+  3. missing-task and missing-log behavior
+  4. tests or explicit test intent that must exist first
+  5. failure conditions that should block implementation
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/runtime-task-logs-detail.md
+
+  The artifact must include:
+  - scope boundaries
+  - edge cases
+  - tests or explicit test intent that must exist first
+  - invariants that must remain true
+  - fail conditions
+  - any escalation needed before implementation
+
+  Review this as a shared runtime slice, not a dashboard-only convenience layer.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/runtime-task-logs-detail.md.
+  - Reviewer criteria define active-vs-historical output behavior clearly enough for later UI work.
+  - Reviewer criteria define how run-health should behave for active versus quiet tasks.
+  - Reviewer criteria cover missing-task and missing-log handling.
+  - Reviewer output identifies concrete pre-implementation tests or explicit test intent.
+escalation_rules:
+  - Escalate if the runtime detail, run-health, or historical-log contract is still too weak for later UI slices.
+  - Escalate if the browser would otherwise need to infer runtime state from incomplete fields.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

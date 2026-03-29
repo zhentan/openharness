@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+if [ -f .git ]; then
+	echo "pre-push blocked: pushes from linked worktrees are not allowed" >&2
+	exit 1
+fi
+
+branch=$(git branch --show-current)
+if [ -z "$branch" ]; then
+	echo "pre-push blocked: detached HEAD pushes are not allowed" >&2
+	exit 1
+fi
+
+if [ "$branch" != "main" ]; then
+	echo "pre-push blocked: pushes must be made on main branch" >&2
+	exit 1
+fi
+
+npx tsc --noEmit
+npx vitest run

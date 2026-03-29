@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+if [ -f .git ]; then
+  echo "pre-commit blocked: commits from linked worktrees are not allowed" >&2
+  exit 1
+fi
+
+branch=$(git branch --show-current)
+if [ -z "$branch" ]; then
+  echo "pre-commit blocked: detached HEAD commits are not allowed" >&2
+  exit 1
+fi
+
+if [ "$branch" != "main" ]; then
+  echo "pre-commit blocked: commits must be made on main branch" >&2
+  exit 1
+fi

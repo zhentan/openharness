@@ -1,0 +1,64 @@
+id: phase9_consistency_audit
+title: Execute post-Phase-9 consistency audit and findings capture
+priority: medium
+depends_on:
+  - phase9_review_consistency_audit
+evaluate: true
+agent_prompt: |
+  Execute a post-Phase-9 consistency audit as an agent task, but remain
+  reviewer-first and evidence-driven.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - docs/phase9/reviews/consistency-audit.md
+  - docs/phase9/reviews/*.md
+  - docs/phase9/handoffs/*.md
+  - landed Phase 9 dashboard and runtime code
+  - current tests for dashboard, runtime contracts, and Phase 9 slices
+
+  Required process:
+  1. Read and follow the reviewer-authored consistency audit constraints before
+     writing final findings.
+  2. Re-check the landed Phase 9 output for runtime-contract drift, dashboard
+     rendering/interaction drift, and design-guideline drift.
+  3. Run any focused tests or validation commands required by the reviewer.
+  4. Capture concrete findings and explicit "no issues found" coverage for each
+     audit area.
+  5. Leave the final handoff at docs/phase9/handoffs/consistency-audit.md.
+
+  Your handoff artifact must include:
+  - the reviewer artifact you consumed
+  - the audit areas covered
+  - commands/tests run
+  - concrete findings
+  - explicit clean areas
+  - must-fix follow-ups
+  - optional follow-ups
+  - any blocked areas
+
+  Scope for this slice:
+  - validate consistency between dashboard types and kernel/runtime contracts
+  - validate key dashboard interaction paths against their reviewed intent
+  - validate major design-guideline commitments against the landed UI
+  - identify any remaining gaps between "merged" Phase 9 output and "stable"
+    Phase 9 output
+
+  Do not start broad new implementation work in this task. This task is for
+  evidence, findings, and follow-up shaping.
+success_criteria:
+  - Reviewer-authored audit expectations exist before final findings are written.
+  - The generator consumes docs/phase9/reviews/consistency-audit.md and leaves a handoff at docs/phase9/handoffs/consistency-audit.md.
+  - Findings distinguish contract drift, interaction/rendering drift, and design-guideline drift.
+  - The handoff includes explicit clean areas, not just problems.
+  - The output includes concrete must-fix follow-ups where appropriate.
+  - No broad new implementation is started inside this audit task.
+escalation_rules:
+  - Escalate if the reviewer artifact is missing or too weak to constrain the audit.
+  - Escalate if the audit reveals Phase 9 is incomplete enough that a larger re-plan is needed instead of follow-up fixes.
+  - Escalate if the task starts turning into a broad implementation slice instead of an audit slice.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 45
+  total_timeout: 90

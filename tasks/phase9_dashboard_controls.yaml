@@ -1,0 +1,61 @@
+id: phase9_dashboard_controls
+title: Phase 9 browser operator controls via adversarial TDD
+priority: medium
+depends_on:
+  - phase9_review_controls
+  - phase9_dashboard_summary_grid
+  - phase9_dashboard_task_detail
+evaluate: true
+agent_prompt: |
+  Implement browser operator controls for Phase 9 as the generator in a
+  reviewer-first adversarial TDD workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - Phase 8 CLI/runtime control behavior
+  - runtime websocket control path and any completed dashboard slices
+
+  Required process:
+  1. Get reviewer-authored acceptance criteria or reviewer-authored test intent
+      from docs/phase9/reviews/controls.md before implementation.
+  2. Add failing tests first.
+  3. Implement the minimum safe code.
+    4. Run focused validation.
+    5. Leave a handoff at docs/phase9/handoffs/controls.md.
+
+    Your handoff artifact must include:
+    - the reviewer artifact you consumed
+    - tests added first
+    - implementation files changed
+    - focused validation run
+    - remaining risks or follow-ups
+
+  Scope for this slice:
+  - add pause, resume, and kill first
+  - add retry only if the runtime path is already wired safely end to end
+  - surface failures clearly to the operator
+  - avoid optimistic UI unless backed by runtime events
+
+  This slice must preserve runtime truth and control safety above convenience.
+
+  Follow the design guideline that destructive controls are visually distinct,
+  scoped clearly, and confirmed by runtime state rather than visual flourish.
+success_criteria:
+  - Reviewer constraints exist before implementation code for controls is added.
+  - The generator consumes docs/phase9/reviews/controls.md and leaves a handoff at docs/phase9/handoffs/controls.md.
+  - Tests fail first for control round-trip behavior and visible failure handling.
+  - Pause, resume, and kill are routed through the runtime rather than browser-only state.
+  - The UI does not claim success before runtime events confirm the new state.
+  - Retry is omitted unless it is already supported safely by the runtime path.
+escalation_rules:
+  - Escalate if browser control behavior would require optimistic state not grounded in runtime events.
+  - Escalate if reviewer criteria do not cover failure display or non-optimistic semantics.
+  - Escalate if kill semantics are unclear enough to risk unsafe operator behavior.
+exploration_budget:
+  max_attempts: 3
+  timeout_per_attempt: 45
+  total_timeout: 120
+

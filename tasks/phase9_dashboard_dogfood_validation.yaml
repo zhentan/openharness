@@ -1,0 +1,62 @@
+id: phase9_dashboard_dogfood_validation
+title: Phase 9 dashboard dogfood validation and findings capture
+priority: medium
+depends_on:
+  - phase9_review_dogfood_validation
+  - phase9_dashboard_controls
+evaluate: true
+agent_prompt: |
+  Execute the Phase 9 dogfood validation pass as an agent task, but remain in a
+  reviewer-first adversarial workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - docs/dogfood-checklist.md
+  - CLAUDE.md
+  - all completed Phase 9 dashboard slices
+
+  Required process:
+  1. Obtain reviewer-authored validation expectations before creating any final
+      findings summary, using docs/phase9/reviews/dogfood-validation.md.
+  2. Exercise the dashboard against the real runtime on this repo.
+  3. Capture concrete operational findings, not vague impressions.
+  4. Fail closed if findings cannot distinguish product-surface gaps from runtime
+     contract gaps.
+    5. Leave the final validation handoff at docs/phase9/handoffs/dogfood-validation.md.
+
+    Your handoff artifact must include:
+    - the reviewer artifact you consumed
+    - the runtime exercise performed
+    - concrete findings
+    - follow-up items
+    - any blocked areas
+
+  Scope for this slice:
+  - validate real kernel connection
+  - validate many-task monitoring usefulness
+  - validate selected-task inspection
+  - validate routine browser controls
+  - capture explicit follow-up items discovered during dogfooding
+
+  Do not start new implementation work in this task. This task is for evidence,
+  findings, and follow-up shaping.
+
+  Include a judgment on whether the dashboard stayed within the design
+  guidelines or drifted toward decorative, chat-first, or kanban-first UI.
+success_criteria:
+  - Reviewer-authored validation expectations exist before final findings are written.
+  - The generator consumes docs/phase9/reviews/dogfood-validation.md and leaves a handoff at docs/phase9/handoffs/dogfood-validation.md.
+  - Dogfooding is done against the real runtime rather than a mocked browser-only path.
+  - Findings distinguish runtime contract gaps from dashboard usability gaps.
+  - The output includes specific follow-up items rather than generic feedback.
+  - No new implementation is started inside this validation task.
+escalation_rules:
+  - Escalate if the dashboard cannot be exercised meaningfully against the real runtime.
+  - Escalate if findings are blocked by missing observability rather than dashboard behavior alone.
+  - Escalate if the task begins turning into an implementation slice instead of a validation slice.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 45
+  total_timeout: 90

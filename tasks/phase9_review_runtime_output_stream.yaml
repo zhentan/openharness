@@ -1,0 +1,57 @@
+id: phase9_review_runtime_output_stream
+title: Review Phase 9 shared runtime output stream before implementation
+priority: high
+depends_on:
+  - phase9_dashboard_scaffold_bootstrap
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the shared runtime output-stream slice that follows
+  Phase 9 scaffold/bootstrap.
+
+  Do not write implementation code. Define the runtime constraints that later
+  UI surfaces can safely depend on.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - src/runtime.ts
+  - src/server/ws-server.ts
+  - src/server/ipc-types.ts
+  - src/supervisor/supervisor.ts
+  - existing runtime-control and websocket tests
+
+  Your review must cover:
+  1. live output subscription semantics for an active task
+  2. unsubscribe and disconnect behavior
+  3. stale or missing output behavior
+  4. tests or explicit test intent that must exist first
+  5. failure conditions that should block implementation
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/runtime-output-stream.md
+
+  The artifact must include:
+  - scope boundaries
+  - edge cases
+  - tests or explicit test intent that must exist first
+  - invariants that must remain true
+  - fail conditions
+  - any escalation needed before implementation
+
+  This is a shared runtime contract slice. Review it for both browser and future
+  interactive CLI/TUI use, not for browser-only convenience.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/runtime-output-stream.md.
+  - Reviewer criteria define live output subscription semantics clearly enough for later UI work.
+  - Reviewer criteria cover unsubscribe, disconnect, and stale-output behavior.
+  - Reviewer output identifies concrete pre-implementation tests or explicit test intent.
+escalation_rules:
+  - Escalate if the current runtime transport cannot support a clean shared output contract.
+  - Escalate if output streaming would require browser-only state invention.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

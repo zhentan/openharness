@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.worktrees/
+.env*.local
+*.log
+coverage/
+.openharness/

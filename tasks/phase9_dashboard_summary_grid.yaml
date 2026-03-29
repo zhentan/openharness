@@ -1,0 +1,68 @@
+id: phase9_dashboard_summary_grid
+title: Phase 9 dashboard summary grid via adversarial TDD
+priority: high
+depends_on:
+  - phase9_review_summary_grid
+  - phase9_dashboard_scaffold_bootstrap
+evaluate: true
+agent_prompt: |
+  Implement the Phase 9 monitoring-first summary grid as the generator in a
+  reviewer-first adversarial TDD workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - src/server/runtime-state-hub.ts
+  - src/server/ipc-types.ts
+  - src/server/ws-server.ts
+  - any dashboard scaffold and bootstrap work already completed
+
+  Required process:
+  1. Get reviewer-authored acceptance criteria or explicit reviewer-authored
+      test intent from docs/phase9/reviews/summary-grid.md before implementation.
+  2. Write failing tests first.
+  3. Implement the minimum code to satisfy them.
+    4. Validate with focused tests.
+    5. Leave a handoff at docs/phase9/handoffs/summary-grid.md.
+
+    Your handoff artifact must include:
+    - the reviewer artifact you consumed
+    - tests added first
+    - implementation files changed
+    - focused validation run
+    - remaining risks or follow-ups
+
+  Scope for this slice:
+  - render a dense many-task summary view from runtime snapshot plus deltas
+  - prioritize legibility with many tasks on screen
+  - make stale/disconnected state obvious
+  - show task id, title, status, updated time, and transition reason when present
+  - recover truthfully after disconnect by re-syncing from a fresh snapshot
+
+  Do not add board workflow, drag and drop, analytics, or selected-task deep
+  inspection in this slice.
+
+  The browser must remain a control surface over runtime-owned state, not invent
+  its own task truth.
+
+  The visual result must stay dense and scan-friendly per
+  docs/plan/phase9-dashboard-design-guidelines.md.
+success_criteria:
+  - Reviewer constraints exist before implementation code for the summary grid is added.
+  - The generator consumes docs/phase9/reviews/summary-grid.md and leaves a handoff at docs/phase9/handoffs/summary-grid.md.
+  - Tests cover snapshot render, delta updates, and stale or disconnected state visibility before implementation.
+  - The summary grid remains usable with many tasks on screen, not just a toy number of rows.
+  - Rows update from runtime deltas without full reload behavior.
+  - The browser can recover from disconnect with a truthful fresh snapshot rather than stale merged state.
+  - The UI does not invent task state that is absent from the runtime contract.
+escalation_rules:
+  - Escalate if the runtime summary contract is insufficient and the slice would otherwise require browser-only state invention.
+  - Escalate if reviewer criteria do not cover stale-state visibility or snapshot-delta merge behavior.
+  - Escalate if implementation pressure pushes the slice toward kanban workflow rather than monitoring density.
+exploration_budget:
+  max_attempts: 3
+  timeout_per_attempt: 45
+  total_timeout: 120
+

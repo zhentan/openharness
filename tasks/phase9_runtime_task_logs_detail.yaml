@@ -1,0 +1,51 @@
+id: phase9_runtime_task_logs_detail
+title: Phase 9 shared runtime task logs, detail, and run-health contract via adversarial TDD
+priority: high
+depends_on:
+  - phase9_review_runtime_task_logs_detail
+evaluate: true
+agent_prompt: |
+  Implement the shared runtime task-detail and historical-log contract slice as
+  the generator in a reviewer-first adversarial TDD workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - CLAUDE.md
+  - relevant runtime and IPC code
+  - docs/phase9/reviews/runtime-task-logs-detail.md
+
+  Required process:
+  1. Consume reviewer-authored constraints from docs/phase9/reviews/runtime-task-logs-detail.md before implementation.
+  2. Add failing tests first.
+  3. Implement the minimum runtime changes needed.
+  4. Run focused validation.
+  5. Leave a handoff at docs/phase9/handoffs/runtime-task-logs-detail.md.
+
+  Your handoff artifact must include:
+  - the reviewer artifact you consumed
+  - tests added first
+  - implementation files changed
+  - focused validation run
+  - remaining risks or follow-ups
+
+  Scope for this slice:
+  - make selected-task detail expectations explicit at the runtime contract layer
+  - make run-health expectations explicit for active versus quiet tasks
+  - make historical-log behavior explicit and runtime-owned
+  - keep active-vs-historical output behavior truthful
+
+  Do not implement dashboard UI in this slice.
+success_criteria:
+  - Reviewer constraints exist before implementation code is added.
+  - The generator consumes docs/phase9/reviews/runtime-task-logs-detail.md and leaves a handoff at docs/phase9/handoffs/runtime-task-logs-detail.md.
+  - Tests fail first for task-detail, run-health, and historical-log behavior.
+  - The runtime detail/log/run-health contract is explicit enough for later UI slices to depend on without guesswork.
+  - Focused validation covers missing-task and missing-log cases.
+escalation_rules:
+  - Escalate if a stable shared detail/log/run-health contract cannot be implemented without widening scope into UI work.
+  - Escalate if reviewer constraints are too weak to constrain active-vs-historical behavior.
+exploration_budget:
+  max_attempts: 3
+  timeout_per_attempt: 45
+  total_timeout: 120

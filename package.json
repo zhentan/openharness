@@ -1,0 +1,34 @@
+{
+  "name": "openharness",
+  "version": "2.0.0",
+  "description": "The open-source operating system for AI agents.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "kernel:start": "tsx bin/openharness.ts start",
+    "kernel:status": "tsx bin/openharness.ts status",
+    "kernel:watch": "tsx bin/openharness.ts watch",
+    "kernel:stop": "tsx bin/openharness.ts stop",
+    "kernel:restart": "tsx bin/openharness.ts restart",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zhentan/openharness.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "ws": "^8.20.0",
+    "yaml": "^2.8.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.5.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.1"
+  }
+}

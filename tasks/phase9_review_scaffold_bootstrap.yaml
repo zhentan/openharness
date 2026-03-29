@@ -1,0 +1,63 @@
+id: phase9_review_scaffold_bootstrap
+title: Review Phase 9 dashboard scaffold and bootstrap before implementation
+priority: high
+depends_on: []
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the first Phase 9 dashboard slice.
+
+  Do not write implementation code. Your job is to constrain the generator
+  before any code is written.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - docs/dogfood-checklist.md
+  - src/runtime.ts
+  - src/server/http-server.ts
+  - src/server/ws-server.ts
+  - src/server/ipc-types.ts
+  - relevant runtime and websocket tests from phase6, phase7, and phase8
+
+  Produce reviewer output that gives the generator a real constraint set:
+  1. concrete edge cases
+  2. tests or explicit test intent that must exist first
+  3. bootstrap/auth invariants that must remain true
+  4. failure conditions that should block implementation
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/scaffold-bootstrap.md
+
+  The artifact must include:
+  - scope boundaries
+  - edge cases
+  - tests or explicit test intent that must exist first
+  - invariants that must remain true
+  - fail conditions
+  - any escalation needed before implementation
+
+  Focus only on:
+  - dashboard scaffold viability
+  - runtime-served bootstrap contract
+  - auth handshake correctness
+  - truthful connected/disconnected state
+  - reconnect and fresh snapshot re-sync expectations
+  - first-screen operator-console posture per the design guidelines
+
+  Do not implement code. Do not drift into later slices.
+success_criteria:
+  - The reviewer produces concrete pre-implementation acceptance criteria rather than general advice.
+  - The reviewer writes the output to docs/phase9/reviews/scaffold-bootstrap.md.
+  - The reviewer criteria cover bootstrap contract shape, auth handshake, disconnect behavior, and reconnect re-sync expectations.
+  - The reviewer identifies the tests that should fail before implementation begins.
+  - The reviewer output is specific enough that a generator cannot plausibly review its own work and proceed unchallenged.
+escalation_rules:
+  - Escalate if the bootstrap contract is too under-specified to constrain implementation.
+  - Escalate if existing runtime transport makes reconnect semantics ambiguous.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

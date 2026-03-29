@@ -1,0 +1,70 @@
+id: phase9_dashboard_scaffold_bootstrap
+title: Phase 9 dashboard scaffold and runtime bootstrap via adversarial TDD
+priority: high
+depends_on:
+  - phase9_review_scaffold_bootstrap
+evaluate: true
+agent_prompt: |
+  Implement the first Phase 9 dashboard slice, but do not start by writing
+  implementation code.
+
+  You are the generator in an adversarial TDD workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - docs/dogfood-checklist.md
+  - relevant runtime/dashboard server code under src/server/ and src/runtime.ts
+  - relevant tests for phase6, phase7, and phase8 runtime/ws behavior
+
+  Required process:
+  1. Obtain reviewer-authored acceptance criteria or reviewer-authored test intent
+      from docs/phase9/reviews/scaffold-bootstrap.md before writing implementation.
+  2. Add failing tests first.
+  3. Implement the minimum code to satisfy those tests.
+  4. Run focused validation.
+    5. Leave concise notes for reviewer verification in docs/phase9/handoffs/scaffold-bootstrap.md.
+
+    Your handoff artifact must include:
+    - the reviewer artifact you consumed
+    - tests added first
+    - implementation files changed
+    - focused validation run
+    - remaining risks or follow-ups
+
+  Scope for this slice:
+  - create a fresh dashboard app under dashboard/
+  - ensure the static build can be served by the existing runtime HTTP path
+  - add the smallest runtime-served bootstrap path needed for browser websocket
+    connection data
+  - make connected versus disconnected state explicit in the browser
+  - make reconnect plus fresh snapshot re-sync behavior truthful
+
+  Do not expand scope into summary-grid richness, task-detail UX, controls,
+  analytics, or theming beyond basic usability.
+
+  Visual direction must follow docs/plan/phase9-dashboard-design-guidelines.md.
+  The result should read as an operator console, not a landing page or chat toy.
+
+  Fail closed if reviewer criteria are missing or too vague to constrain the
+  implementation.
+success_criteria:
+  - Reviewer-authored acceptance criteria or test intent exists before implementation code is added.
+  - The generator consumes docs/phase9/reviews/scaffold-bootstrap.md and leaves a handoff at docs/phase9/handoffs/scaffold-bootstrap.md.
+  - New tests fail before the dashboard scaffold or bootstrap implementation is written.
+  - The dashboard app can be built and served by the runtime static file server.
+  - The browser receives websocket bootstrap data from a runtime-served path rather than hardcoded build-time values.
+  - Connected and disconnected states are visible and truthful rather than optimistic.
+  - Reconnect behavior is defined and validated well enough to re-sync from a fresh runtime snapshot after disconnect or kernel restart.
+  - Focused tests and validation commands are documented for reviewer verification.
+escalation_rules:
+  - Escalate if runtime bootstrap requirements are ambiguous or require inventing a second source of truth outside runtime-owned state.
+  - Escalate if reviewer criteria do not clearly constrain authentication, connection state, and bootstrap behavior.
+  - Escalate if the slice begins drifting into summary-grid or task-detail implementation.
+exploration_budget:
+  max_attempts: 3
+  timeout_per_attempt: 45
+  total_timeout: 120
+

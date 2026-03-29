@@ -1,0 +1,51 @@
+id: phase9_review_runtime_controls_contract
+title: Review Phase 9 shared runtime controls contract before implementation
+priority: high
+depends_on:
+  - phase9_runtime_task_logs_detail
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the shared runtime controls-contract slice.
+
+  Do not write implementation code. Define the runtime control semantics that
+  later browser and TUI surfaces can safely rely on.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - CLAUDE.md
+  - runtime-control behavior from Phase 8
+  - relevant runtime, supervisor, and websocket code
+
+  Your review must cover:
+  1. pause and resume semantics
+  2. whether kill belongs in scope and what it means if so
+  3. whether retry belongs in scope and what it means if so
+  4. failure and confirmation behavior for controls
+  5. tests or explicit test intent that must exist first
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/runtime-controls-contract.md
+
+  The artifact must include:
+  - scope boundaries
+  - edge cases
+  - tests or explicit test intent that must exist first
+  - invariants that must remain true
+  - fail conditions
+  - any escalation needed before implementation
+
+  Review this as a shared runtime slice, not as browser-only button behavior.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/runtime-controls-contract.md.
+  - Reviewer criteria make explicit decisions about kill and retry scope.
+  - Reviewer criteria cover confirmation and failure semantics clearly enough for later UI work.
+  - Reviewer output identifies concrete pre-implementation tests or explicit test intent.
+escalation_rules:
+  - Escalate if control semantics are still too vague to expose safely.
+  - Escalate if kill or retry would create unsafe expectations without more runtime work.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

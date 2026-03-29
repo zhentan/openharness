@@ -1,0 +1,57 @@
+id: phase9_review_summary_grid
+title: Review Phase 9 summary grid before implementation
+priority: high
+depends_on:
+  - phase9_runtime_controls_contract
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the Phase 9 summary-grid slice.
+
+  Do not write implementation code. Produce the reviewer constraints that the
+  generator must satisfy before coding.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - src/server/runtime-state-hub.ts
+  - src/server/ipc-types.ts
+  - any completed dashboard scaffold and bootstrap work
+
+  Your review must define:
+  1. pre-implementation test intent
+  2. snapshot plus delta merge behaviors that must hold
+  3. stale and disconnected visibility expectations
+  4. density expectations for many-task monitoring
+  5. failure modes that should block the slice
+  6. density and scanability checks derived from the design guidelines
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/summary-grid.md
+
+  The artifact must include:
+  - scope boundaries
+  - tests or explicit test intent that must exist first
+  - snapshot and delta merge invariants
+  - density expectations
+  - fail conditions
+  - any escalation needed before implementation
+
+  Require a real monitoring threshold rather than demo-only rendering. A good
+  constraint is that the layout should remain readable and useful with at least
+  dozens of concurrent tasks, and the review may raise that threshold further if
+  the existing architecture supports it.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/summary-grid.md.
+  - Reviewer criteria cover snapshot render, delta merge, stale-state visibility, and density expectations.
+  - Reviewer criteria identify specific tests or explicit test intent that must exist before implementation.
+  - Reviewer output is specific enough to prevent a generator from drifting into kanban workflow features.
+escalation_rules:
+  - Escalate if the runtime summary contract cannot support the required density or merge expectations without a contract change.
+  - Escalate if monitoring usefulness cannot be defined concretely enough to test.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

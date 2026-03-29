@@ -1,0 +1,57 @@
+id: phase9_review_task_detail
+title: Review Phase 9 selected-task detail before implementation
+priority: medium
+depends_on:
+  - phase9_dashboard_summary_grid
+  - phase9_runtime_task_logs_detail
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the Phase 9 selected-task detail slice.
+
+  Do not write implementation code. Define the constraints that the generator
+  must satisfy before writing tests or implementation.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - current dashboard scaffold and summary-grid work
+  - runtime task inspection, output-stream, and get-logs contracts and related tests
+
+  Your review must cover:
+  1. selection stability expectations
+  2. missing or deleted task behavior
+  3. task output, log visibility, and run-health visibility requirements
+  4. safeguards for high-volume output or log backpressure
+  5. tests or explicit test intent that must exist first
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/task-detail.md
+
+  The artifact must include:
+  - scope boundaries
+  - tests or explicit test intent that must exist first
+  - missing-task behavior expectations
+  - output visibility requirements
+  - fail conditions
+  - any escalation needed before implementation
+
+  Do not let the slice collapse into a chat-first interface. This is an
+  operator-detail view.
+
+  Review against the design guideline that detail must support monitoring rather
+  than dominate the product.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/task-detail.md.
+  - Reviewer criteria cover selection stability, missing-task handling, output visibility, run-health visibility, and high-volume output safety.
+  - Reviewer criteria identify concrete pre-implementation tests or explicit test intent.
+  - Reviewer output stays within the operator-detail scope rather than drifting into a chat-product redesign.
+escalation_rules:
+  - Escalate if output inspection or run-health visibility still needs runtime support that does not yet exist.
+  - Escalate if high-volume output safety cannot be defined with current runtime contracts.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

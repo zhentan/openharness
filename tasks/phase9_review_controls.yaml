@@ -1,0 +1,57 @@
+id: phase9_review_controls
+title: Review Phase 9 operator controls before implementation
+priority: medium
+depends_on:
+  - phase9_dashboard_task_detail
+  - phase9_runtime_controls_contract
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the Phase 9 browser controls slice.
+
+  Do not write implementation code. Define the constraints for the generator.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - CLAUDE.md
+  - Phase 8 CLI/runtime-control behavior
+  - any completed dashboard slices
+  - the completed runtime controls-contract slice
+
+  Your review must cover:
+  1. pause, resume, and kill semantics
+  2. visible failure behavior
+  3. non-optimistic UI requirements
+  4. whether retry is safe to expose yet
+  5. the tests or explicit test intent that must exist first
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/controls.md
+
+  The artifact must include:
+  - scope boundaries
+  - tests or explicit test intent that must exist first
+  - control invariants
+  - fail conditions
+  - any escalation needed before implementation
+
+  Selected-task-scoped controls are acceptable in this first pass. Do not force
+  bulk or board-level controls into scope unless the runtime contract already
+  supports them cleanly.
+
+  Review against the design guideline that controls must feel safe and should
+  never imply success before runtime confirmation.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/controls.md.
+  - Reviewer criteria cover pause, resume, kill, visible failures, and non-optimistic UI semantics.
+  - Reviewer criteria make a clear call on whether retry belongs in scope yet.
+  - Reviewer output identifies concrete pre-implementation tests or explicit test intent.
+escalation_rules:
+  - Escalate if runtime control semantics are not clear enough to expose safely in the browser.
+  - Escalate if retry would create misleading UI or unsafe operator expectations.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60

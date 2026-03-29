@@ -1,0 +1,50 @@
+id: phase9_runtime_controls_contract
+title: Phase 9 shared runtime controls contract via adversarial TDD
+priority: high
+depends_on:
+  - phase9_review_runtime_controls_contract
+evaluate: true
+agent_prompt: |
+  Implement the shared runtime controls-contract slice as the generator in a
+  reviewer-first adversarial TDD workflow.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - CLAUDE.md
+  - relevant runtime-control, websocket, and supervisor code
+  - docs/phase9/reviews/runtime-controls-contract.md
+
+  Required process:
+  1. Consume reviewer-authored constraints from docs/phase9/reviews/runtime-controls-contract.md before implementation.
+  2. Add failing tests first.
+  3. Implement the minimum runtime changes needed.
+  4. Run focused validation.
+  5. Leave a handoff at docs/phase9/handoffs/runtime-controls-contract.md.
+
+  Your handoff artifact must include:
+  - the reviewer artifact you consumed
+  - tests added first
+  - implementation files changed
+  - focused validation run
+  - remaining risks or follow-ups
+
+  Scope for this slice:
+  - finalize the runtime contract for pause/resume
+  - implement or explicitly defer kill and retry based on reviewer constraints
+  - preserve non-optimistic semantics for later UI consumers
+
+  Do not implement dashboard UI in this slice.
+success_criteria:
+  - Reviewer constraints exist before implementation code is added.
+  - The generator consumes docs/phase9/reviews/runtime-controls-contract.md and leaves a handoff at docs/phase9/handoffs/runtime-controls-contract.md.
+  - Tests fail first for the control semantics that remain in scope.
+  - The runtime control contract is explicit enough for later browser and TUI work to stay truthful.
+  - Focused validation makes clear what is implemented and what is intentionally deferred.
+escalation_rules:
+  - Escalate if safe runtime control semantics cannot be implemented inside the slice.
+  - Escalate if reviewer constraints are too vague to constrain kill or retry behavior.
+exploration_budget:
+  max_attempts: 3
+  timeout_per_attempt: 45
+  total_timeout: 120

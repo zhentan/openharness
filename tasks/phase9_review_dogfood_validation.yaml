@@ -1,0 +1,52 @@
+id: phase9_review_dogfood_validation
+title: Review Phase 9 dogfood validation criteria before execution
+priority: medium
+depends_on:
+  - phase9_dashboard_controls
+evaluate: true
+agent: claude-code
+agent_prompt: |
+  You are the reviewer for the Phase 9 dogfood validation slice.
+
+  Do not write implementation code. Define what evidence the validation task
+  must produce.
+
+  Required context:
+  - docs/plan/phase9-dashboard-dogfood-plan.md
+  - docs/plan/phase9-agent-execution-plan.md
+  - docs/plan/phase9-dashboard-design-guidelines.md
+  - docs/dogfood-checklist.md
+  - CLAUDE.md
+  - completed dashboard slices
+
+  Your review must constrain:
+  1. what counts as real runtime dogfooding
+  2. what evidence distinguishes runtime gaps from dashboard gaps
+  3. what findings format is specific enough to drive follow-up work
+  4. what would make the validation too weak to trust
+
+  Required output artifact:
+  - write your review to docs/phase9/reviews/dogfood-validation.md
+
+  The artifact must include:
+  - evidence expectations
+  - findings format expectations
+  - fail conditions
+  - any escalation needed before validation begins
+
+  Do not start new implementation. This review is about evidence quality.
+
+  The review must also judge whether the resulting dashboard stayed inside the
+  design guidelines instead of drifting into decorative or workflow-first UI.
+success_criteria:
+  - The reviewer writes the output to docs/phase9/reviews/dogfood-validation.md.
+  - Reviewer criteria define the evidence required for meaningful real-runtime dogfooding.
+  - Reviewer criteria distinguish dashboard usability issues from runtime contract issues.
+  - Reviewer output makes it hard for the validation task to return vague impressions instead of concrete findings.
+escalation_rules:
+  - Escalate if the existing dashboard slices are not complete enough to produce trustworthy dogfood findings.
+  - Escalate if the runtime observability surface is still too weak to support meaningful validation.
+exploration_budget:
+  max_attempts: 2
+  timeout_per_attempt: 30
+  total_timeout: 60
